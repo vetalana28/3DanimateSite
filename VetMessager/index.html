@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetMessager</title>
+
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="shortcut icon" href="images/fav1.svg" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="header__container container">
+            <a href="" class="header__logo">VetMessager</a>
+            <ul class="header__nav">
+                <li>Главная</li>
+                <li>Лента</li>
+                <li>Моя страница</li>
+                <li>Чат</li>
+            </ul>
+            <a href="" class="header__button">Войти</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero__container container">
+            <div class="hero__text">
+                <h1>Извинитесь...</h1>
+                <p>Приложение не доступно в вашем регионе((</p>
+                <p> Попробуйте включить впн</p>
+            </div>
+
+            <div class="hero__weather-btn__container">
+                <a class="hero__weather-btn" href="">
+                    <p>Погода в Нижнекамске на каждый день</p>
+                    <img src="images/weatherLine.svg" alt="">
+                    <img src="images/WeatherIcon.svg" alt="">
+                </a>
+            </div>
+
+            <a href="" class="hero__btn header__button">
+                <p>Чатица ура!!</p> <img src="images/main-btn.svg" alt="">
+            </a>
+        </section>
+
+
+        <section class="container">
+            <div class="card__wrapper">
+
+                <div class="card__container">
+                    <a class="card " href="">
+                        <img alt="" src="images/card1.svg">
+                        <p>Чат будет?</p>
+                        <p class="card-desc">Пожалуйста</p>
+                    </a>
+                </div>
+                <div class="card__container">
+                    <a class="card " href="">
+                        <img alt="" src="images/card2.svg">
+                        <p>Рубль будет?</p>
+                        <p class="card-desc">Пожулайста</p>
+                    </a>
+                </div>
+                <div class="card__container">
+                    <a class="card " href="">
+                        <img alt="" src="images/card3.svg">
+                        <p>Новости будет?</p>
+                        <p class="card-desc">Пожуйлиста</p>
+                    </a>
+                </div>
+                <div class="card__container">
+                    <a class="card " href="">
+                        <img alt="" src="images/card4.svg">
+                        <p>Тапать будешь?</p>
+                        <p class="card-desc">Пжжпжжпжпж</p>
+                    </a>
+                </div>
+                <div class="card__container">
+                    <a class="card " href="">
+                        <img alt="" src="images/card5.svg">
+                        <p>Погоду будешь?</p>
+                        <p class="card-desc">Пожжалста</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const cards = document.querySelectorAll('.card__wrapper');
+
+        const observer = new IntersectionObserver((entries, obs) => 
+        {
+            entries.forEach(entry => 
+            {
+                if (entry.isIntersecting) 
+                {
+                    entry.target.classList.add('is-visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        },
+            {
+                threshold: 0.8,
+            }
+        );
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+</body>
+
+</html>

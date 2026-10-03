@@ -1,0 +1,300 @@
+/* -------------------------------------------------
+   Токены
+------------------------------------------------- */
+
+:root{
+  --bg: #E9E6F7;
+  --ink: #372F5A;
+  --ink-soft: #776F9C;
+  --white: #FFFFFF;
+  --radius-card: 32px;
+  --radius-chip: 18px;
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+}
+
+/* -------------------------------------------------
+   Секция / шапка
+------------------------------------------------- */
+
+.clay{
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 96px 32px 120px;
+}
+
+.clay__header{
+  max-width: 600px;
+  margin: 0 auto 64px;
+  text-align: center;
+}
+
+.eyebrow{
+  display: inline-block;
+  padding: 7px 18px;
+  border-radius: 999px;
+  background: var(--white);
+  box-shadow:
+    -6px -6px 14px rgba(255,255,255,0.9),
+    6px 6px 16px rgba(150,140,200,0.28);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  margin-bottom: 22px;
+}
+
+.clay__header h2{
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(32px, 4.6vw, 48px);
+  line-height: 1.1;
+  margin: 0 0 16px;
+}
+
+.clay__header .subtitle{
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* -------------------------------------------------
+   Сетка карточек
+------------------------------------------------- */
+
+.plans{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 1140px){
+  .plans{ grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px){
+  .plans{ grid-template-columns: 1fr; gap: 24px; }
+  .clay{ padding: 64px 20px 80px; }
+  .plan--popular{ order: -1; }
+}
+
+/* -------------------------------------------------
+   Карточка (клей-стиль): выпуклая поверхность,
+   двойная мягкая тень — светлая сверху-слева,
+   тёмная (в тон карточки) снизу-справа
+------------------------------------------------- */
+
+.plan{
+  --clay-light: #ffffff;
+  --clay: #AFD4F5;
+  --clay-deep: #8FB9DE;
+
+  position: relative;
+  background: linear-gradient(160deg, var(--clay-light) 0%, var(--clay) 55%);
+  border-radius: var(--radius-card);
+  padding: 34px 28px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow:
+    -10px -10px 22px rgba(255,255,255,0.7),
+    12px 14px 26px var(--clay-deep);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.plan:hover{
+  transform: translateY(-8px);
+  box-shadow:
+    -10px -10px 24px rgba(255,255,255,0.85),
+    16px 20px 32px var(--clay-deep);
+}
+
+.plan--blue{ --clay-light:#D3EAFC; --clay:#AFD4F5; --clay-deep:#8FB9DE; }
+.plan--mint{ --clay-light:#D8F5E7; --clay:#B8EAD3; --clay-deep:#8FCBAF; }
+.plan--coral{ --clay-light:#FFE3CD; --clay:#FFC9A6; --clay-deep:#EFA97C; }
+.plan--lavender{ --clay-light:#EBDFFB; --clay:#DAC9F5; --clay-deep:#B8A2D8; }
+
+.plan--popular{
+  transform: translateY(-18px);
+  padding-top: 42px;
+}
+
+.plan--popular:hover{
+  transform: translateY(-24px);
+}
+
+@media (max-width: 1140px){
+  .plan--popular{ transform: none; }
+  .plan--popular:hover{ transform: translateY(-8px); }
+}
+
+.ribbon{
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  background: var(--ink);
+  color: var(--white);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 16px;
+  border-radius: 999px;
+  box-shadow: 0 6px 14px rgba(55,47,90,0.35);
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------
+   Иконка — вдавлена в поверхность карточки
+   (инсет-тень, контраст к выпуклой карточке)
+------------------------------------------------- */
+
+.plan__icon{
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  background: var(--clay-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset -5px -5px 10px rgba(255,255,255,0.8),
+    inset 5px 5px 12px var(--clay-deep);
+  margin-bottom: 4px;
+}
+
+.plan__icon svg{
+  width: 44px;
+  height: 44px;
+}
+
+/* -------------------------------------------------
+   Текстовые блоки
+------------------------------------------------- */
+
+.plan__name{
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0;
+}
+
+.plan__desc{
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+  min-height: 42px;
+}
+
+.plan__price{
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 0 14px;
+  border-bottom: 2px solid rgba(255,255,255,0.6);
+}
+
+.plan__price .amount{
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.plan__price .period{
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.plan__features{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  flex: 1;
+}
+
+.plan__features li{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.check{
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border-radius: 7px;
+  background: var(--clay-light);
+  box-shadow:
+    -3px -3px 6px rgba(255,255,255,0.8),
+    3px 3px 7px var(--clay-deep);
+  position: relative;
+}
+
+.check::after{
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  width: 5px;
+  height: 8px;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(40deg);
+}
+
+/* -------------------------------------------------
+   Кнопка — выпуклая, при нажатии "вдавливается"
+------------------------------------------------- */
+
+.plan__btn{
+  margin-top: 8px;
+  padding: 13px 20px;
+  border: none;
+  border-radius: var(--radius-chip);
+  background: var(--ink);
+  color: var(--white);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow:
+    -5px -5px 10px rgba(255,255,255,0.5),
+    6px 6px 14px rgba(35,30,60,0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.plan__btn:hover{
+  background: #443a6e;
+  transform: translateY(-2px);
+  box-shadow:
+    -6px -6px 12px rgba(255,255,255,0.55),
+    8px 8px 18px rgba(35,30,60,0.4);
+}
+
+.plan__btn:active{
+  transform: translateY(1px);
+  box-shadow:
+    inset 4px 4px 8px rgba(20,17,35,0.5),
+    inset -3px -3px 6px rgba(90,80,130,0.4);
+}
+
+.plan__btn:focus-visible{
+  outline: 3px solid var(--white);
+  outline-offset: 2px;
+}

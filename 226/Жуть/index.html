@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скоро мы будем вместе</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #c00;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            height: 100vh;
+            cursor: none;
+            position: relative;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .message {
+            font-size: 3rem;
+            text-align: center;
+            text-shadow: 0 0 10px #f00, 0 0 20px #f00;
+            margin-bottom: 2rem;
+            animation: blink 2s infinite, flicker 0.5s infinite;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        @keyframes flicker {
+            0%, 100% { text-shadow: 0 0 10px #f00, 0 0 20px #f00; }
+            50% { text-shadow: 0 0 5px #f00, 0 0 10px #f00, 0 0 15px #f00, 0 0 20px #f00; }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            text-align: center;
+            opacity: 0.7;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .falling-letter {
+            position: absolute;
+            color: #c00;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 0;
+            text-shadow: 0 0 5px #f00;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #f00 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            mix-blend-mode: screen;
+        }
+
+        .blood-drops {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .blood-drop {
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            background: #c00;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: drip 5s infinite;
+        }
+
+        @keyframes drip {
+            0% {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .static {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.3;
+            animation: static-flicker 0.1s infinite;
+        }
+
+        @keyframes static-flicker {
+            0% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 0.1; }
+        }
+
+        .face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, transparent 30%, #300 70%);
+            border-radius: 50%;
+            opacity: 0.05;
+            animation: float 20s infinite linear;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(calc(100vw - 200px), calc(100vh - 200px)) rotate(90deg); }
+            50% { transform: translate(calc(100vw - 200px), 0) rotate(180deg); }
+            75% { transform: translate(0, calc(100vh - 200px)) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        .face:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+
+        .face:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            animation-duration: 25s;
+        }
+    </style>
+</head>
+<body>
+    <div class="static"></div>
+    
+    <div class="blood-drops" id="bloodDrops"></div>
+    
+    <div class="face"></div>
+    <div class="face"></div>
+    <div class="face"></div>
+    
+    <div class="container">
+        <h1 class="message">КИНЬ МНЕ ПАПКУ МОДОВ ДЛЯ МАЙНА</h1>
+        <p class="subtitle">прошу последний раз</p>
+    </div>
+    
+    <div class="custom-cursor" id="cursor"></div>
+
+    <script>
+        // Кастомный курсор
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Создание падающих букв из курсора
+        const letters = 'СКОРМБУДЕМВМЕСТЕ';
+        let letterInterval;
+
+        document.addEventListener('mouseenter', () => {
+            letterInterval = setInterval(createFallingLetter, 200);
+        });
+
+        document.addEventListener('mouseleave', () => {
+            clearInterval(letterInterval);
+        });
+
+        function createFallingLetter() {
+            const letter = document.createElement('div');
+            letter.className = 'falling-letter';
+            letter.textContent = letters[Math.floor(Math.random() * letters.length)];
+            
+            // Позиционируем букву рядом с курсором
+            const cursorRect = cursor.getBoundingClientRect();
+            const offsetX = (Math.random() - 0.5) * 50;
+            letter.style.left = (cursorRect.left + offsetX) + 'px';
+            letter.style.top = (cursorRect.top) + 'px';
+            
+            // Случайная продолжительность анимации
+            const duration = 2 + Math.random() * 3;
+            letter.style.animationDuration = duration + 's';
+            
+            document.body.appendChild(letter);
+            
+            // Удаляем букву после завершения анимации
+            setTimeout(() => {
+                if (letter.parentNode) {
+                    letter.parentNode.removeChild(letter);
+                }
+            }, duration * 1000);
+        }
+
+        // Создание капель крови
+        const bloodDrops = document.getElementById('bloodDrops');
+        for (let i = 0; i < 20; i++) {
+            createBloodDrop();
+        }
+
+        function createBloodDrop() {
+            const drop = document.createElement('div');
+            drop.className = 'blood-drop';
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDelay = Math.random() * 5 + 's';
+            bloodDrops.appendChild(drop);
+        }
+
+        // Случайное изменение интенсивности свечения текста
+        setInterval(() => {
+            const message = document.querySelector('.message');
+            const intensity = 0.5 + Math.random() * 0.5;
+            message.style.filter = `brightness(${intensity})`;
+        }, 100);
+    </script>
+</body>
+</html>

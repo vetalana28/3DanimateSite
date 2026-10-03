@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ты меня любишь?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #e91e63;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        #yes {
+            background: #4CAF50;
+            color: white;
+        }
+
+        #yes:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        #no {
+            background: #f44336;
+            color: white;
+            position: relative;
+        }
+
+        #no:hover {
+            background: #da190b;
+        }
+
+        .hidden-message {
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            button {
+                padding: 12px 25px;
+                font-size: 16px;
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Саша, мы досмотрим последнюю серию мальчиков, сующих друг в друга руки? 💕</h1>
+        <div class="buttons">
+            <button id="yes">Да</button>
+            <button id="no">Нет</button>
+        </div>
+        <div id="message" class="hidden-message">Урааа! 💖</div>
+    </div>
+
+    <script>
+        const noButton = document.getElementById('no');
+        const yesButton = document.getElementById('yes');
+        const message = document.getElementById('message');
+        const container = document.querySelector('.container');
+
+        // Функция для получения случайной позиции
+        function getRandomPosition() {
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = noButton.getBoundingClientRect();
+            
+            // Максимальные координаты, чтобы кнопка не выходила за пределы контейнера
+            const maxX = containerRect.width - buttonRect.width - 20;
+            const maxY = containerRect.height - buttonRect.height - 20;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            return { x: randomX, y: randomY };
+        }
+
+        // Обработчик для кнопки "Нет"
+        noButton.addEventListener('mouseover', function() {
+            const newPosition = getRandomPosition();
+            noButton.style.position = 'absolute';
+            noButton.style.left = newPosition.x + 'px';
+            noButton.style.top = newPosition.y + 'px';
+        });
+
+        // Обработчик для кнопки "Нет" на мобильных устройствах
+        noButton.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const newPosition = getRandomPosition();
+            noButton.style.position = 'absolute';
+            noButton.style.left = newPosition.x + 'px';
+            noButton.style.top = newPosition.y + 'px';
+        });
+
+        // Обработчик для кнопки "Да"
+        yesButton.addEventListener('click', function() {
+            message.style.display = 'block';
+            // Скрываем кнопки после выбора
+            yesButton.style.display = 'none';
+            noButton.style.display = 'none';
+            
+            // Добавляем немного анимации
+            message.style.animation = 'fadeIn 0.5s ease-in';
+        });
+
+        // Добавляем CSS анимацию
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
